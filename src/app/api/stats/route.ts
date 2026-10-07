@@ -16,7 +16,8 @@ export async function GET() {
   const now = new Date();
   const ym = `${now.getFullYear()}-${pad(now.getMonth() + 1)}`;
   const monthStart = `${ym}-01`;
-  const monthEnd = `${ym}-31`;
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const monthEnd = `${ym}-${String(lastDayOfMonth).padStart(2, "0")}`;
 
   const [
     totalRow,
@@ -92,6 +93,7 @@ export async function GET() {
     db
       .select({
         id: protectionCases.id,
+        childId: protectionCases.childId,
         title: protectionCases.title,
         caseType: protectionCases.caseType,
         severity: protectionCases.severity,
@@ -121,7 +123,8 @@ export async function GET() {
   const keys = Array.from(monthLabels.keys());
   if (keys.length > 0) {
     const from = `${keys[0]}-01`;
-    const to = `${ym}-31`;
+    const lastDayOfCurrentMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const to = `${ym}-${String(lastDayOfCurrentMonth).padStart(2, "0")}`;
     const rows = await db
       .select({
         d: donations.donationDate,
@@ -179,7 +182,7 @@ export async function GET() {
     recentDonations: recentDonations.map((d) => ({ ...d })),
     openCases: openCases.map((c) => ({
       id: c.id,
-      childId: 0,
+      childId: c.childId,
       caseType: c.caseType,
       title: c.title,
       description: "",

@@ -17,14 +17,20 @@ export function DonutChart({
   );
   const r = 44;
   const c = 2 * Math.PI * r;
-  let offset = 0;
+
+  const offsets = new Array<number>(segments.length);
+  let cumulative = 0;
+  for (let i = 0; i < segments.length; i++) {
+    offsets[i] = -cumulative;
+    cumulative += (segments[i].value / total) * c;
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-6">
       <div className="relative h-36 w-36 shrink-0">
         <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
           <circle cx="60" cy="60" r={r} fill="none" stroke="#e7e5e4" strokeWidth="14" />
-          {segments.map((s) => {
+          {segments.map((s, i) => {
             const frac = s.value / total;
             const dash = frac * c;
             const el = (
@@ -37,11 +43,10 @@ export function DonutChart({
                 stroke={s.color}
                 strokeWidth="14"
                 strokeDasharray={`${dash} ${c - dash}`}
-                strokeDashoffset={-offset}
+                strokeDashoffset={offsets[i]}
                 className="transition-all duration-500"
               />
             );
-            offset += dash;
             return el;
           })}
         </svg>
