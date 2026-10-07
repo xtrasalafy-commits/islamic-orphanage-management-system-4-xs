@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-manrope), ui-sans-serif, sans-serif;
+
+  --color-paper: #f6f5ef;
+  --color-ink: #1f2a24;
+
+  --color-pine-50: #eef6f1;
+  --color-pine-100: #d7ebdf;
+  --color-pine-200: #b0d7c3;
+  --color-pine-300: #83bda0;
+  --color-pine-400: #549c7b;
+  --color-pine-500: #348062;
+  --color-pine-600: #25684e;
+  --color-pine-700: #1d553f;
+  --color-pine-800: #174433;
+  --color-pine-900: #10332a;
+  --color-pine-950: #081f18;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-pine-200);
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-modal-in {
+  animation: modal-in 0.18s ease-out both;
+}
+
+.animate-toast-in {
+  animation: toast-in 0.22s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out both;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton {
+  background-color: #e6e4da;
+  border-radius: 0.5rem;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
