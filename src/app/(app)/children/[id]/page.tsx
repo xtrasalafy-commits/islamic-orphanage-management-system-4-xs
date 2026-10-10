@@ -475,7 +475,7 @@ function EditChildModal({
 
 /* ------------------------------- Add need modal ------------------------------ */
 
-export function AddNeedModal({
+function AddNeedModal({
   open,
   childId,
   childName,
@@ -569,7 +569,7 @@ export function AddNeedModal({
 
 /* ------------------------------- Add case modal ------------------------------ */
 
-export function AddCaseModal({
+function AddCaseModal({
   open,
   childId,
   childName,

@@ -4,7 +4,7 @@ config();
 
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { db, pool } from "../src/db";
+import { db } from "../src/db";
 import { children, donations, needs, protectionCases, users } from "../src/db/schema";
 
 const PASSWORD = "panti123";
@@ -345,5 +345,4 @@ main()
   .catch((err) => {
     console.error("Seed gagal:", err);
     process.exit(1);
-  })
-  .finally(() => pool.end().catch(() => undefined));
+  });

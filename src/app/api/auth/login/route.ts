@@ -25,7 +25,8 @@ export async function POST(req: NextRequest) {
 
     await createSessionCookie(user.id);
     return NextResponse.json({ user: toSafeUser(user) });
-  } catch {
+  } catch (err) {
+    console.error("[auth/login] Error:", err);
     return NextResponse.json({ error: "Terjadi kesalahan server." }, { status: 500 });
   }
 }

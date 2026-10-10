@@ -43,12 +43,13 @@ Web app ini **gratis & bebas iklan**. Jika ingin mendukung pengembangan, kunjung
 |---|---|
 | Framework | [Next.js 16](https://nextjs.org/) (App Router, Turbopack) |
 | Bahasa | TypeScript 5.9 |
-| Database | PostgreSQL via [Neon](https://neon.tech/) |
+| Database | PostgreSQL via [Neon](https://neon.tech/) (serverless driver) |
 | ORM | [Drizzle ORM](https://orm.drizzle.team/) 0.45 |
 | UI | [Tailwind CSS v4](https://tailwindcss.com/), [Lucide Icons](https://lucide.dev/) |
 | Data Fetching | [SWR](https://swr.vercel.app/) |
 | Font | Manrope + Sora (next/font) |
 | QR Code | [qrcode.react](https://www.npmjs.com/package/qrcode.react) |
+| Source Download | [adm-zip](https://www.npmjs.com/package/adm-zip) |
 | Password Hashing | [bcryptjs](https://www.npmjs.com/package/bcryptjs) |
 
 ## Screenshot / Demo
@@ -107,6 +108,8 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 3. Pada **Environment Variables**, tambahkan:
    - `DATABASE_URL` = URL koneksi Neon (format pooler, `?sslmode=require`)
 4. Klik **Deploy**.
+
+> **Penting:** Aplikasi ini menggunakan **Neon serverless driver** (`@neondatabase/serverless` + `drizzle-orm/neon-http`) yang berkomunikasi via HTTP, bukan TCP Pool. Ini wajib untuk Vercel serverless — driver `pg` tradisional akan mengalami "connection terminated" saat cold start.
 
 > **Catatan:** Pastikan schema database sudah dibuat (`drizzle-kit push` atau `schema.sql`) **sebelum** deploy, karena build Next.js memerlukan `DATABASE_URL`.
 

@@ -1,5 +1,5 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -7,16 +7,11 @@ if (!databaseUrl) {
   throw new Error("DATABASE_URL is required");
 }
 
-const globalForDb = globalThis as typeof globalThis & {
-  __arenaNextJsPostgresqlPool?: Pool;
-};
+/**
+ * Neon HTTP driver: setiap query adalah HTTP request terpisah.
+ * Cocok untuk Vercel serverless (tidak ada koneksi TCP persisten yang
+ bisa terputus saat cold start).
+ */
+const sql = neon(databaseUrl);
 
-export const pool =
-  globalForDb.__arenaNextJsPostgresqlPool ??
-  new Pool({
-    connectionString: databaseUrl,
-  });
-
-globalForDb.__arenaNextJsPostgresqlPool = pool;
-
-export const db = drizzle(pool);
+export const db = drizzle(sql);
