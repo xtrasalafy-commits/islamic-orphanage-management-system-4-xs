@@ -26,7 +26,24 @@ export async function POST(req: NextRequest) {
     await createSessionCookie(user.id);
     return NextResponse.json({ user: toSafeUser(user) });
   } catch (err) {
-    console.error("[auth/login] Error:", err);
-    return NextResponse.json({ error: "Terjadi kesalahan server." }, { status: 500 });
+    const errMsg = err instanceof Error ? err.message : String(err);
+    const errStack = err instanceof Error ? err.stack : undefined;
+    console.error("[auth/login] Error:", errMsg, errStack);
+
+    let status = 500;
+    let message = "Terjadi kesalahan server.";
+
+    if (errMsg.includes("DATABASE_URL is required")) {
+      status = 503;
+      message = "DATABASE_URL belum dikonfigurasi.";
+    } else if (errMsg.includes("ENOTFOUND") || errMsg.includes("ECONNREFUSED") || errMsg.includes("ETIMEDOUT")) {
+      status = 503;
+      message = "Gagal terhubung ke database.";
+    } else if (errMsg.includes("relation") && errMsg.includes("does not exist")) {
+      status = 500;
+      message = "Schema database belum di-push. Jalankan: npm run db:push";
+    }
+
+    return NextResponse.json({ error: message, detail: errMsg }, { status });
   }
 }
